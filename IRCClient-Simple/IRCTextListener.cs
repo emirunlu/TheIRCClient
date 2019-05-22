@@ -14,6 +14,7 @@ namespace IRCClient_Simple
             _data = initializeData;
         }
 
+
         private bool Init()
         {
             if (_box != null && _box.IsDisposed)

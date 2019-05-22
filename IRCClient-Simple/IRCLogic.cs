@@ -63,6 +63,11 @@ namespace IRCClient_Simple
             return IRCClient.IsClientRunning();
         }
 
+        internal bool SendMessageToAll(string text)
+        {
+            return IRCClient.SendMessageToAll(text);
+        }
+
         public bool StopClient()
         {
             //execute quit stuff

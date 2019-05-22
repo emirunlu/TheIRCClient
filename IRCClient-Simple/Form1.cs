@@ -46,5 +46,20 @@ namespace IRCClient_Simple
                 _irc.StopClient();
             }
         }
+
+        private void SendMessageButton_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text != string.Empty && _irc.IsClientRunning())
+            {
+                _irc.SendMessageToAll(textBox1.Text);
+            }
+        }
+        internal void richTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // set the current caret position to the end
+            IRCRichTextBox.SelectionStart = IRCRichTextBox.Text.Length;
+            // scroll it automatically
+            IRCRichTextBox.ScrollToCaret();
+        }
     }
 }

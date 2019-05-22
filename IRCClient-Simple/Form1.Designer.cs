@@ -30,7 +30,6 @@
         {
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.ConnectButton = new System.Windows.Forms.Button();
-            this.ircTextBox = new System.Windows.Forms.TextBox();
             this.ServerInput = new System.Windows.Forms.TextBox();
             this.ServerName = new System.Windows.Forms.Label();
             this.ChannelsInput = new System.Windows.Forms.TextBox();
@@ -39,8 +38,8 @@
             this.PortLabel = new System.Windows.Forms.Label();
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.UsernameInput = new System.Windows.Forms.TextBox();
-            this.IRCRichTextBox = new System.Windows.Forms.RichTextBox();
             this.SendMessageButton = new System.Windows.Forms.Button();
+            this.IRCRichTextBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -59,15 +58,6 @@
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
-            // 
-            // ircTextBox
-            // 
-            this.ircTextBox.Location = new System.Drawing.Point(12, 12);
-            this.ircTextBox.Multiline = true;
-            this.ircTextBox.Name = "ircTextBox";
-            this.ircTextBox.ReadOnly = true;
-            this.ircTextBox.Size = new System.Drawing.Size(638, 386);
-            this.ircTextBox.TabIndex = 2;
             // 
             // ServerInput
             // 
@@ -133,14 +123,6 @@
             this.UsernameInput.Size = new System.Drawing.Size(132, 20);
             this.UsernameInput.TabIndex = 10;
             // 
-            // IRCRichTextBox
-            // 
-            this.IRCRichTextBox.Location = new System.Drawing.Point(12, 12);
-            this.IRCRichTextBox.Name = "IRCRichTextBox";
-            this.IRCRichTextBox.Size = new System.Drawing.Size(638, 386);
-            this.IRCRichTextBox.TabIndex = 11;
-            this.IRCRichTextBox.Text = string.Empty;
-            // 
             // SendMessageButton
             // 
             this.SendMessageButton.Location = new System.Drawing.Point(656, 418);
@@ -149,6 +131,16 @@
             this.SendMessageButton.TabIndex = 12;
             this.SendMessageButton.Text = "Send";
             this.SendMessageButton.UseVisualStyleBackColor = true;
+            this.SendMessageButton.Click += new System.EventHandler(this.SendMessageButton_Click);
+            // 
+            // IRCRichTextBox
+            // 
+            this.IRCRichTextBox.Location = new System.Drawing.Point(12, 12);
+            this.IRCRichTextBox.Name = "IRCRichTextBox";
+            this.IRCRichTextBox.Size = new System.Drawing.Size(638, 386);
+            this.IRCRichTextBox.TabIndex = 11;
+            this.IRCRichTextBox.Text = string.Empty;
+            this.IRCRichTextBox.TextChanged += richTextBox_TextChanged;
             // 
             // Form1
             // 
@@ -165,7 +157,6 @@
             this.Controls.Add(this.ChannelsInput);
             this.Controls.Add(this.ServerName);
             this.Controls.Add(this.ServerInput);
-            this.Controls.Add(this.ircTextBox);
             this.Controls.Add(this.ConnectButton);
             this.Controls.Add(this.textBox1);
             this.Name = "Form1";
@@ -180,7 +171,6 @@
 
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button ConnectButton;
-        private System.Windows.Forms.TextBox ircTextBox;
         private System.Windows.Forms.TextBox ServerInput;
         private System.Windows.Forms.Label ServerName;
         private System.Windows.Forms.TextBox ChannelsInput;
@@ -189,8 +179,8 @@
         private System.Windows.Forms.Label PortLabel;
         private System.Windows.Forms.Label UsernameLabel;
         private System.Windows.Forms.TextBox UsernameInput;
-        private System.Windows.Forms.RichTextBox IRCRichTextBox;
         private System.Windows.Forms.Button SendMessageButton;
+        private System.Windows.Forms.RichTextBox IRCRichTextBox;
     }
 }
 

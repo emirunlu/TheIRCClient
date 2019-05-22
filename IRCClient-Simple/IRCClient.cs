@@ -84,10 +84,38 @@ namespace IRCClient_Simple
             }
         }
 
+        internal bool SendMessageToAll(string input)
+        {
+
+            input = input.Trim();
+
+            if (input.ToLower().Contains("/join"))
+            {
+
+                if (input.Split(' ').Length > 0)
+                {
+                    string channels = input.Split(' ')[1];
+                    _NewChannels += channels;
+                    return WriteIrc("JOIN " + channels);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (input.ToLower().Contains("/quit"))
+            {
+                return QuitConnect();
+            }
+            else
+            {
+                return WriteIrc("PRIVMSG " + _NewChannels + " :" + input);
+            }
+        }
+
         internal bool StopClient()
         {
             _stopTask = true;
-            //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs("CLOSING CLIENT", "CLOSE"));
             return QuitConnect();
         }
 
@@ -165,9 +193,7 @@ namespace IRCClient_Simple
 
                     string ircData = _streamReader.ReadLine();
 
-                    //OnRawMessageReceived?.Invoke(this, new IrcRawReceivedEventArgs(ircData));
-
-
+                    Trace.WriteLine("CHANNELDATA: " + ircData);
 
                     if (ircData.Contains("PING"))
                     {
@@ -185,12 +211,10 @@ namespace IRCClient_Simple
                             string user = ircData.Split(new string[] { "PRIVMSG" }, StringSplitOptions.None)[0].Split('!')[0].Substring(1);
 
                             channel = channel.Replace("=", string.Empty);
-
-                            //OnMessageReceived?.Invoke(this, new IrcReceivedEventArgs(message, user, channel));
                         }
                         catch (Exception e)
                         {
-                            //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs(ex.ToString(), "MESSAGE RECEIVED ERROR (PRIVMSG)"));
+                            //
                         }
 
 
@@ -205,11 +229,10 @@ namespace IRCClient_Simple
                             string channel = ircData.Split(new string[] { "JOIN" }, StringSplitOptions.None)[1].Split(':')[1];
                             string userThatJoined = ircData.Split(new string[] { "JOIN" }, StringSplitOptions.None)[0].Split(':')[1].Split('!')[0];
 
-                            //OnMessageReceived?.Invoke(this, new IrcReceivedEventArgs("User Joined", userThatJoined, channel));
                         }
                         catch (Exception e)
                         {
-                            //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs(ex.ToString(), "MESSAGE RECEIVED ERROR (JOIN)"));
+                            //
                         }
 
                     }
@@ -221,11 +244,10 @@ namespace IRCClient_Simple
                         {
                             string user = ircData.Split(new string[] { "QUIT" }, StringSplitOptions.None)[0].Split('!')[0].Substring(1);
 
-                            //OnMessageReceived?.Invoke(this, new IrcReceivedEventArgs("User Left", user, "unknown"));
                         }
                         catch (Exception e)
                         {
-                            //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs(ex.ToString(), "MESSAGE RECEIVED ERROR (JOIN)"));
+                            //
                         };
                     }
 
@@ -269,7 +291,7 @@ namespace IRCClient_Simple
                         }
                         catch (Exception e)
                         {
-                            //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs(ex.ToString(), "MESSAGE RECEIVED ERROR (USERLIST)"));
+                            //
                         }
 
 
@@ -277,20 +299,16 @@ namespace IRCClient_Simple
 
                     if (ircData.ToLower().Contains(" 366 "))
                     {
-                        //OnUserListReceived?.Invoke(this, new IrcUserListReceivedEventArgs(usersPerChannelDictionary));
                         usersPerChannelDictionary.Clear();
                     }
                     Thread.Sleep(1);
                 }
-
-                //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs("RECEIVER HAS STOPPED RUNNING", "MESSAGE RECEIVER"));
 
                 QuitConnect();
                 _stopTask = false;
             }
             catch (Exception e)
             {
-                //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs("LOST CONNECTION: " + ioex.ToString(), "MESSAGE RECEIVER"));
                 if (_isConnectionEstablised)
                 {
                     _stopTask = false;
@@ -310,14 +328,12 @@ namespace IRCClient_Simple
             }
             catch (Exception e)
             {
-                //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs("Could not send message" + input + ", _tcpClient client is not running :X, error : " + e.ToString(), "MESSAGE SENDER")); ;
                 return false;
             }
 
         }
         public bool QuitConnect()
         {
-            //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs("STARTING IRC CLIENT SHUTDOWN PROCEDURE", "QUIT"));
             //send quit to server
             if (WriteIrc("QUIT"))
             {
@@ -343,13 +359,11 @@ namespace IRCClient_Simple
 
                 _isConnectionEstablised = false;
 
-                //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs("FINISHED SHUTDOWN PROCEDURE", "QUIT"));
                 return true;
 
             }
             else
             {
-                //OnDebugMessage?.Invoke(this, new IrcDebugMessageEventArgs("COULD NOT WRITE QUIT COMMAND TO SERVER", "QUIT"));
                 return true;
             }
         }
